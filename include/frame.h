@@ -45,7 +45,7 @@ public:
   vk::AbstractCamera*           cam_;                   //!< Camera model.
   SE3                           T_f_w_;                 //!< Transform (f)rame from (w)orld.
   Matrix<double, 6, 6>          Cov_;                   //!< Covariance.
-  ImgPyr                        img_pyr_;               //!< Image Pyramid.
+  ImgPyr                        img_pyr_;               //!< Image Pyramid. 图像金字塔
   Features                      fts_;                   //!< List of features in the image.
   vector<FeaturePtr>              key_pts_;               //!< Five features and associated 3D points which are used to detect if two frames have overlapping field of view.
   bool                          is_keyframe_;           //!< Was this frames selected as keyframe

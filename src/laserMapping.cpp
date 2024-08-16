@@ -267,6 +267,7 @@ void pointBodyToWorld_ikfom(PointType const * const pi, PointType * const po, st
 }
 #endif
 
+// 根据当前 state 转换点云到世界坐标系
 void pointBodyToWorld(PointType const * const pi, PointType * const po)
 {
     V3D p_body(pi->x, pi->y, pi->z);
@@ -485,6 +486,7 @@ void imu_cbk(const sensor_msgs::Imu::ConstPtr &msg_in)
     sig_buffer.notify_all();
 }
 
+// 从 msg 消息中获取图像 Mat
 cv::Mat getImageFromMsg(const sensor_msgs::ImageConstPtr& img_msg) {
   cv::Mat img;
   img = cv_bridge::toCvCopy(img_msg, "bgr8")->image;
@@ -536,7 +538,7 @@ bool sync_packages(LidarMeasureGroup &meas)
         if(meas.lidar->points.size() <= 1)
         {
             mtx_buffer.lock();
-            if (img_buffer.size()>0) // temp method, ignore img topic when no lidar points, keep sync
+            if (img_buffer.size()>0) // 当没有激光雷达点时忽略 img 消息，保持同步
             {
                 lidar_buffer.pop_front();
                 img_buffer.pop_front();
@@ -552,8 +554,8 @@ bool sync_packages(LidarMeasureGroup &meas)
         lidar_pushed = true; // flag
     }
 
-    if (img_buffer.empty()) { // no img topic, means only has lidar topic
-        if (last_timestamp_imu < lidar_end_time+0.02) { // imu message needs to be larger than lidar_end_time, keep complete propagate.
+    if (img_buffer.empty()) { // 没有img消息，意味着只有激光雷达消息
+        if (last_timestamp_imu < lidar_end_time+0.02) { // imu消息需要大于lidar_end_time，保持完整传播
             // ROS_ERROR("out sync");
             return false;
         }
@@ -687,6 +689,7 @@ bool sync_packages(LidarMeasureGroup &meas)
     // lidar_pushed = false;
 }
 
+// 增量更新地图，往 ikdtree 中添加点
 void map_incremental()
 {
     for (int i = 0; i < feats_down_size; i++)

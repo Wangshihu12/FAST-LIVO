@@ -162,7 +162,7 @@ struct LidarMeasureGroup
     double last_update_time;
     PointCloudXYZI::Ptr lidar;
     std::deque<struct MeasureGroup> measures;
-    bool is_lidar_end;
+    bool is_lidar_end;          // 激光帧扫描是否结束，如果为 true ，意味着将要清除所有缓存
     int lidar_scan_index_now;
     LidarMeasureGroup()
     {
