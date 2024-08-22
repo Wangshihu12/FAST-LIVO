@@ -1,42 +1,44 @@
+feature_extract_enable : 0
+point_filter_num : 2
+max_iteration : 10
+dense_map_enable : 1
+filter_size_surf : 0.15
+filter_size_map : 0.3
+cube_side_length : 20
+grid_size : 40
+patch_size : 8
+img_enable : 1
+lidar_enable : 1
+outlier_threshold : 300 # 78 100 156
+ncc_en: false
+ncc_thre: 0
+img_point_cov : 100 # 1000
+laser_point_cov : 0.001 # 0.001
+delta_time: 0.0
+
 common:
     lid_topic:  "/livox/lidar"
     imu_topic:  "/livox/imu"
-    img_topic:  "/usb_cam/image_raw"
-    time_sync_en: false         # ONLY turn on when external time synchronization is really not possible
-    time_offset_lidar_to_imu: 0.0 # Time offset between lidar and IMU calibrated by other algorithms, e.g. LI-Init (can be found in README).
-                                  # This param will take effect no matter what time_sync_en is. So if the time offset is not known exactly, please set as 0.0
 
 preprocess:
-    lidar_type: 1                # 1 for Livox serials LiDAR, 2 for Velodyne LiDAR, 3 for ouster LiDAR, 
-    scan_line: 4
-    blind: 4
+    lidar_type: 1 # 1:Livox Avia LiDAR  2:VELO16  3:OUST64  4:XT32 
+    scan_line: 6 # 16  64  32
+    blind: 5 # blind x m disable
 
 mapping:
-    acc_cov: 0.1
-    gyr_cov: 0.1
-    b_acc_cov: 0.0001
-    b_gyr_cov: 0.0001
-    fov_degree:    360
-    det_range:     100
-    extrinsic_est_en:  false      # true: enable the online estimation of IMU-LiDAR 
-    extrinsic_T: [ 0.0, 0.0, 0.0 ]
+    acc_cov_scale: 100
+    gyr_cov_scale: 10000
+    extrinsic_T: [ 0.0, 0.0, 0.0 ] # horizon 0.05512, 0.02226, -0.0297
     extrinsic_R: [ 1, 0, 0,
                    0, 1, 0,
-                   0, 0, 1 ]
-    # extrinsic_T: [ 0.05512, 0.02226, -0.0297 ]
-    # extrinsic_T: [ -0.011, -0.02329, 0.04412 ]
-    # det_range: 450.0
-
-publish:
-    path_en:  true
-    scan_publish_en:  true       # false: close all the point cloud output
-    dense_publish_en: false       # false: low down the points number in a global-frame point clouds scan.
-    scan_bodyframe_pub_en: false  # true: output the point cloud scans in IMU-body-frame
+                   0, 0, 1]
 
 pcd_save:
     pcd_save_en: false
-    interval: -1                 # how many LiDAR frames saved in each pcd file; 
-#                                  # -1 : all frames will be saved in ONE pcd file, may lead to memory crash when having too much frames.
 
-ivox_grid_resolution: 0.5        # default=0.2
-ivox_nearby_type: 18             # 6, 18, 26
+camera:
+    img_topic: /usb_cam/image_raw
+    Rcl: [0.00162756,-0.999991,0.00390957,
+         -0.0126748,-0.00392989,-0.999912,
+          0.999918,0.00157786,-0.012681]
+    Pcl: [0.0409257, 0.0318424, -0.0927219]

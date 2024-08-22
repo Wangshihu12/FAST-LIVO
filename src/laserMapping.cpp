@@ -1313,7 +1313,6 @@ int main(int argc, char** argv)
         fast_lio_is_ready = true;
         flg_EKF_inited = (LidarMeasures.lidar_beg_time - first_lidar_time) < INIT_TIME ? \
                         false : true;
-
         if (! LidarMeasures.is_lidar_end) 
         {
             cout<<"[ VIO ]: Raw feature num: "<<pcl_wait_pub->points.size() << "." << endl;
@@ -1755,7 +1754,6 @@ int main(int argc, char** argv)
                                 &laserCloudWorld->points[i]);
         }
         *pcl_wait_pub = *laserCloudWorld;
-
         if(!img_en) publish_frame_world(pubLaserCloudFullRes);
         // publish_visual_world_map(pubVisualCloud);
         publish_effect_world(pubLaserCloudEffect);
