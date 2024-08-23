@@ -451,7 +451,7 @@ void livox_pcl_cbk(const livox_ros_driver::CustomMsg::ConstPtr &msg)
         ROS_ERROR("lidar loop back, clear buffer");
         lidar_buffer.clear();
     }
-    printf("[ INFO ]: get point cloud at time: %.6f.\n", msg->header.stamp.toSec());
+    printf("[ INFO ]: get point cloud at time: %.6f and size: %d.\n", msg->header.stamp.toSec(), msg->point_num);
     PointCloudXYZI::Ptr ptr(new PointCloudXYZI());
     p_pre->process(msg, ptr);
     lidar_buffer.push_back(ptr);
@@ -531,7 +531,7 @@ bool sync_packages(LidarMeasureGroup &meas)
     
     if (!lidar_pushed) { // If not in lidar scan, need to generate new meas
         if (lidar_buffer.empty()) {
-            // ROS_ERROR("out sync");
+            // ROS_ERROR("out sync 1 ");
             return false;
         }
         meas.lidar = lidar_buffer.front(); // push the firsrt lidar topic
@@ -545,7 +545,7 @@ bool sync_packages(LidarMeasureGroup &meas)
             }
             mtx_buffer.unlock();
             sig_buffer.notify_all();
-            // ROS_ERROR("out sync");
+            // ROS_ERROR("out sync 2 ");
             return false;
         }
         sort(meas.lidar->points.begin(), meas.lidar->points.end(), time_list); // sort by sample timestamp
@@ -556,7 +556,7 @@ bool sync_packages(LidarMeasureGroup &meas)
 
     if (img_buffer.empty()) { // 没有img消息，意味着只有激光雷达消息
         if (last_timestamp_imu < lidar_end_time+0.02) { // imu消息需要大于lidar_end_time，保持完整传播
-            // ROS_ERROR("out sync");
+            // ROS_ERROR("out sync 3 ");
             return false;
         }
         struct MeasureGroup m; //standard method to keep imu message.
@@ -587,7 +587,7 @@ bool sync_packages(LidarMeasureGroup &meas)
     { // has img topic, but img topic timestamp larger than lidar end time, process lidar topic.
         if (last_timestamp_imu < lidar_end_time+0.02) 
         {
-            // ROS_ERROR("out sync");
+            // ROS_ERROR("out sync 4 ");
             return false;
         }
         double imu_time = imu_buffer.front()->header.stamp.toSec();
@@ -613,7 +613,7 @@ bool sync_packages(LidarMeasureGroup &meas)
         double img_start_time = img_time_buffer.front(); // process img topic, record timestamp
         if (last_timestamp_imu < img_start_time) 
         {
-            // ROS_ERROR("out sync");
+            // ROS_ERROR("out sync 5 ");
             return false;
         }
         double imu_time = imu_buffer.front()->header.stamp.toSec();

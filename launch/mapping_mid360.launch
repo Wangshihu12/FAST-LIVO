@@ -15,7 +15,7 @@
 	<param name="cube_side_length" type="double" value="1000" />
 
 	<node pkg="fast_livo" type="fastlivo_mapping" name="laserMapping" output="screen" >
-		<rosparam file="$(find fast_livo)/config/camera_pinhole_resize.yaml" />
+		<rosparam file="$(find fast_livo)/config/camera_mid360.yaml" />
 	</node>
 
 	<group if="$(arg rviz)">
