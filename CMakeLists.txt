@@ -114,4 +114,7 @@ add_executable(fastlivo_mapping src/laserMapping.cpp
 target_link_libraries(fastlivo_mapping ${catkin_LIBRARIES} ${PCL_LIBRARIES} ${PYTHON_LIBRARIES} vio ikdtree)
 target_include_directories(fastlivo_mapping PRIVATE ${PYTHON_INCLUDE_DIRS})
 
+add_executable(camera_calib src/camera_calib.cpp)
+target_link_libraries(camera_calib ${catkin_LIBRARIES})
+
 

@@ -1,0 +1,16 @@
+<launch>
+	<!-- Launch file for Livox AVIA LiDAR -->
+
+	<arg name="rviz" default="true" />
+
+	<node pkg="fast_livo" type="camera_calib" name="calibration_node" output="screen" >
+	</node>
+
+	<!-- <group if="$(arg rviz)">
+		<node launch-prefix="nice" pkg="rviz" type="rviz" name="rviz"
+			args="-d $(find fast_livo)/rviz_cfg/loam_livox.rviz" />
+	</group> -->
+	<node pkg="image_transport" type="republish" name="republish" args="compressed in:=/usb_cam/image_raw raw out:=/usb_cam/image_raw" output="screen" respawn="true"/>
+
+launch-prefix="gdb -ex run --args" launch-prefix="valgrind --leak-check=full --show-leak-kinds=all"
+</launch>

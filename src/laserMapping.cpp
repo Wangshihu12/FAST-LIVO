@@ -563,7 +563,7 @@ bool sync_packages(LidarMeasureGroup &meas)
         double imu_time = imu_buffer.front()->header.stamp.toSec();
         m.imu.clear();
         mtx_buffer.lock();
-        while ((!imu_buffer.empty() && (imu_time<lidar_end_time))) {
+        while ((!imu_buffer.empty() && (imu_time < lidar_end_time))) {
             imu_time = imu_buffer.front()->header.stamp.toSec();
             if(imu_time > lidar_end_time) break;
             m.imu.push_back(imu_buffer.front());
@@ -583,7 +583,7 @@ bool sync_packages(LidarMeasureGroup &meas)
     // cout<<"lidar_buffer.size(): "<<lidar_buffer.size()<<" img_buffer.size(): "<<img_buffer.size()<<endl;
     // cout<<"time_buffer.size(): "<<time_buffer.size()<<" img_time_buffer.size(): "<<img_time_buffer.size()<<endl;
     // cout<<"img_time_buffer.front(): "<<img_time_buffer.front()<<"lidar_end_time: "<<lidar_end_time<<"last_timestamp_imu: "<<last_timestamp_imu<<endl;
-    if ((img_time_buffer.front()>lidar_end_time) )
+    if ((img_time_buffer.front() > lidar_end_time) )
     { // has img topic, but img topic timestamp larger than lidar end time, process lidar topic.
         if (last_timestamp_imu < lidar_end_time+0.02) 
         {
