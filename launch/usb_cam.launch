@@ -1,8 +1,6 @@
+
 <launch>
-
-	<node pkg="fast_livo" type="camera_calib" name="calibration_node" output="screen" >
-	</node>
-
+<!--启动一个usb相机，需要增加对应修改：usb_cam_read_yyx/src/usb_cam-develop/CMakeLists.txt和usb_cam_read_yyx/src/usb_cam-develop/nodes/目录下文件-->
     <!-- Node to start USB camera -->
     <node pkg="usb_cam" type="usb_cam_node" name="usb_cam" output="screen">
         <!-- Configure USB camera parameters here -->
@@ -12,8 +10,5 @@
         <param name="pixel_format" value="yuyv" />
         <param name="camera_frame_id" value="camera" />
     </node>
-
-	<node pkg="image_transport" type="republish" name="republish" args="compressed in:=/usb_cam/image_raw raw out:=/usb_cam/image_raw" output="screen" respawn="true"/>
-
-launch-prefix="gdb -ex run --args" launch-prefix="valgrind --leak-check=full --show-leak-kinds=all"
+ 
 </launch>
