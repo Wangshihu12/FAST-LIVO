@@ -1,14 +1,23 @@
 
 <launch>
-<!--启动一个usb相机，需要增加对应修改：usb_cam_read_yyx/src/usb_cam-develop/CMakeLists.txt和usb_cam_read_yyx/src/usb_cam-develop/nodes/目录下文件-->
     <!-- Node to start USB camera -->
     <node pkg="usb_cam" type="usb_cam_node" name="usb_cam" output="screen">
         <!-- Configure USB camera parameters here -->
         <param name="video_device" value="/dev/video0" />
         <param name="image_width" value="1280" />
         <param name="image_height" value="720" />
+        <param name="framerate" value="10" />   <!-- 帧数 -->
         <param name="pixel_format" value="yuyv" />
-        <param name="camera_frame_id" value="camera" />
+        <param name="color_format" value="yuv422p" />
+        <param name="camera_frame_id" value="usb_cam" />
+        <param name="io_method" value="mmap"/>
     </node>
- 
+
+    <node name="image_view" pkg="image_view" type="image_view" respawn="false" output="screen">
+        <remap from="image" to="/usb_cam/image_raw"/>
+        <param name="autosize" value="true" />
+    </node>
+
+    <!-- 标定命令 -->
+    <!-- rosrun camera_calibration cameracalibrator.py --size 6x9 --square 0.02  image:=/usb_cam/image_raw camera:=/usb_cam -->
 </launch>

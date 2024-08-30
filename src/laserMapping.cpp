@@ -552,6 +552,9 @@ bool sync_packages(LidarMeasureGroup &meas)
         meas.lidar_beg_time = time_buffer.front(); // generate lidar_beg_time
         lidar_end_time = meas.lidar_beg_time + meas.lidar->points.back().curvature / double(1000); // calc lidar scan end time
         lidar_pushed = true; // flag
+
+        cout << "lidar begin time: " << meas.lidar_beg_time << ", gap time: " << meas.lidar->points.back().curvature / double(1000) << endl;
+        cout << "lidar end time: " << lidar_end_time << endl;
     }
 
     if (img_buffer.empty()) { // 没有img消息，意味着只有激光雷达消息
@@ -1288,6 +1291,8 @@ int main(int argc, char** argv)
         p_imu->Process2(LidarMeasures, state, feats_undistort); 
         state_propagat = state;
         #endif
+
+        cout << "feat undistort size: " << feats_undistort->points.size() << endl;
 
         if (lidar_selector->debug)
         {
