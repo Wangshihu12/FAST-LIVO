@@ -69,7 +69,8 @@
         "variant": "cpp",
         "bit": "cpp",
         "*.ipp": "cpp",
-        "shared_mutex": "cpp"
+        "shared_mutex": "cpp",
+        "core": "cpp"
     },
     "python.autoComplete.extraPaths": [
         "/opt/ros/noetic/lib/python3/dist-packages"

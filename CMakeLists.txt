@@ -117,4 +117,10 @@ target_include_directories(fastlivo_mapping PRIVATE ${PYTHON_INCLUDE_DIRS})
 add_executable(camera_calib src/camera_calib.cpp)
 target_link_libraries(camera_calib ${catkin_LIBRARIES})
 
+add_executable(stamp_calib src/stamp_calib.cpp)
+target_link_libraries(stamp_calib ${catkin_LIBRARIES})
+
+add_executable(trigger_cam src/trigger_cam.cpp)
+target_link_libraries(trigger_cam ${catkin_LIBRARIES})
+
 

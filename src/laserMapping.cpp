@@ -501,6 +501,7 @@ void img_cbk(const sensor_msgs::ImageConstPtr& msg)
     }
     double msg_header_time = msg->header.stamp.toSec() + delta_time;
     printf("[ INFO ]: get img at time: %.6f.\n", msg_header_time);
+    cout << "img cols: " << cv_bridge::toCvCopy(msg, "bgr8")->image.cols << ", rows: " << cv_bridge::toCvCopy(msg, "bgr8")->image.rows << endl;
     if (msg_header_time < last_timestamp_img)
     {
         ROS_ERROR("img loop back, clear buffer");

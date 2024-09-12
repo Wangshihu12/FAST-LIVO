@@ -1,6 +1,6 @@
 <launch>
 
-	<node pkg="fast_livo" type="camera_calib" name="calibration_node" output="screen" >
+	<node pkg="fast_livo" type="stamp_calib" name="stamp_calib_node" output="screen" >
 	</node>
 
 
