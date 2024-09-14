@@ -7,7 +7,7 @@
 #include <atomic>
 #include <deque>
 
-#include <livox_ros_driver2/CustomMsg.h>
+#include <std_msgs/Float64.h>
 
 using namespace std;
 
@@ -43,7 +43,7 @@ void gpioControlThread()
 }
 
 // 回调函数，用于处理接收到的消息
-void triggerCallback(const livox_ros_driver2::CustomMsg::ConstPtr &msg)
+void triggerCallback(const std_msgs::Float64 &msg)
 {
     // mtx_buffer.lock();
     // time_buffer.push_back(msg->header.stamp.toSec());
@@ -53,22 +53,24 @@ void triggerCallback(const livox_ros_driver2::CustomMsg::ConstPtr &msg)
     // 获取当前时间
     double current_time = ros::Time::now().toSec();
 
-    // 这里需要根据消息实际类型来访问时间戳
-    double message_time = msg->header.stamp.toSec();
+    // 这里需要根据消息实际类型来访问时间戳（毫秒）
+    double message_time = msg.data;
 
     // 当前时间与消息时间戳的时间差（毫秒）
-    double time_diff = (current_time - message_time) * 1000;
+    double time_diff = current_time * 1000 - message_time;
+    cout << "message_time: " << message_time << endl;
+    cout << "current_time: " << current_time << endl;
     cout << "时间差为: " << time_diff << endl;
 
-    // 等待 time_diff 后设置信号标志
-    std::this_thread::sleep_for(std::chrono::milliseconds(static_cast<int>(time_diff)));
+    // 比如 10 hz，等待 100ms - time_diff 后设置信号标志
+    std::this_thread::sleep_for(std::chrono::milliseconds(static_cast<int>(100 - time_diff)));
     gpio_signal_needed = true;
 }
 
 int main(int argc, char** argv)
 {
     // 初始化ROS节点
-    ros::init(argc, argv, "listener");
+    ros::init(argc, argv, "trigger_cam");
 
     // 创建节点句柄
     ros::NodeHandle nh;
